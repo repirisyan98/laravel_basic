@@ -13,14 +13,18 @@
                 <div class="card-body">
                     <a href="{{route('kelola_buku.create')}}" class="btn btn-primary text-decoration-none"
                         style="color: white;">Tambah <i class="fa fa-plus"></i></a>
-                    <table class="table mt-4">
+                    <table class="table mt-4" id="myTable">
+                        <th>No</th>
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Penerbit</th>
                         <th>Tahun Terbit</th>
                         <th style="text-align: center;">Aksi</th>
+                        <?php $no = 1?>
                         @foreach($data as $i)
                         <tr>
+                            
+                            <td>{{$no++}}</td>
                             <td>{{$i->nama}}</td>
                             <td>{{$i->kategori}}</td>
                             <td>{{$i->penerbit}}</td>
