@@ -230,16 +230,18 @@ return [
             'topnav' => true,
         ],
         [
-            'text' => 'Kelola Buku',
-            'url'  => 'kelola_buku',
-            'can'  => 'isAdmin',
-        ],
-        [
             'text'        => 'pages',
             'url'         => 'admin/pages',
             'icon'        => 'far fa-fw fa-file',
             'label'       => 4,
             'label_color' => 'success',
+        ],
+        ['header' => 'Menu'],
+        [
+            'text' => 'Kelola Buku',
+            'url'  => 'kelola_buku',
+            'icon' => 'fa fa-book',
+            'can'  => 'isAdmin',
         ],
         ['header' => 'account_settings'],
         [

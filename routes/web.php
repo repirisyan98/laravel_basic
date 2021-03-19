@@ -22,5 +22,6 @@ use App\Http\Controllers\KelolaBukuController;
 Auth::routes();
 Route::redirect('/','/login');
 Route::get('/home',[HomeController::class, 'index'])->name('home');
+Route::get('admin/ajaxadmin/dataBuku/{id}',[KelolaBukuController::class, 'getDataBuku']);
 Route::resource('profile',ProfileController::class);
 Route::resource('kelola_buku',KelolaBukuController::class)->middleware('is_admin');

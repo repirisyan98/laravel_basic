@@ -26,9 +26,9 @@
                             <td>{{$i->penerbit}}</td>
                             <td>{{$i->tahun_terbit}}</td>
                             <td style="text-align: center;"><a style="color: white;" class="btn btn-warning"
-                                    href="{{route('kelola_buku.edit',$i->id)}}">Ubah</a>
-                                <button type="button" style="color: white;" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#ModalHapus{{$i->id}}">Hapus</a>
+                                    href="{{route('kelola_buku.edit',$i->id)}}"><i class="fa fa-pencil-alt"></i>&nbspUbah</a>
+                                <button type="button" style="color: white;" class="btn-hapus btn btn-danger" data-toggle="modal" data-id="{{$i->id}}"
+                                   data-target="#hapusModal"><i class="fa fa-trash-alt"></i>&nbspHapus</a>
                             </td>
                         </tr>
                         @endforeach
@@ -41,8 +41,7 @@
 <!-- Button trigger modal -->
 
 <!-- Modal -->
-@foreach($data as $i)
-<div class="modal fade" id="ModalHapus{{$i->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="hapusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,9 +54,10 @@
             <div class="modal-body">
                 Apakah Anda yakin ingin menghapus data tersebut ?
 
-                <form action="{{route('kelola_buku.destroy',$i->id)}}" method="post">
+                <form method="post" id="form-hapus">
                     @csrf
                     @method('DELETE')
+                    <input type="hidden" name="id" id="hapus-id" value="">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -67,16 +67,33 @@
         </div>
     </div>
 </div>
-@endforeach
 @stop
 @stop
 
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+<!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
 @stop
 
 @section('js')
 <script>
-console.log('Hi!');
+$(document).ready(function(){
+  $(".btn-hapus").click(function(){
+    let id = $(this).data('id');
+    console.log(baseurl+'/admin/ajaxadmin/dataBuku/'+id);
+        $.ajax({
+            type: "GET",
+            url: baseurl+'/admin/ajaxadmin/dataBuku/'+id,
+            dataType: 'json',
+            success: function(res){
+                $('#hapus-id').val(res.id);         
+                $('#form-hapus').attr('action',baseurl+'/kelola_buku/'+id);
+            },
+            error: function(jqXHR){
+                console.log(jqXHR);
+            },
+        
+        });
+    });
+});
 </script>
 @stop

@@ -22,6 +22,11 @@ class KelolaBukuController extends Controller
         return view('kelola_buku.index',compact('data'));
     }
 
+    public function getDataBuku($id){
+        $buku = Book::find($id);
+        return response()->json($buku);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -49,7 +54,12 @@ class KelolaBukuController extends Controller
 
         $book->save();
 
-        return redirect()->route('kelola_buku.index');
+        $notification = array(
+            'message' => 'Data buku berhasil ditambahkan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('kelola_buku.index')->with($notification);
     }
 
     /**
@@ -94,7 +104,11 @@ class KelolaBukuController extends Controller
         $newdata->tahun_terbit = $request->tahun_terbit;
         $newdata->save();
 
-        return redirect(route('kelola_buku.index'));
+        $notification = array(
+            'message' => 'Data buku berhasil diubah',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kelola_buku.index')->with($notification);
     }
 
     /**
@@ -103,12 +117,16 @@ class KelolaBukuController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
         //
         $book = Book::find($id);
         $book->delete();
-    
-        return redirect(route('kelola_buku.index'));
+        $notification = array(
+            'message' => 'Data buku berhasil dihapus',
+            'alert-type' => 'success'
+            );
+        return redirect()->route('kelola_buku.index')->with($notification);
     }
 }

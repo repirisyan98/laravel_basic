@@ -46,11 +46,16 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
-                return redirect()->route('home');
+        if(Auth::viaRemember()){
+            return redirect()->route('home');
         }else{
-            return redirect()->route('login')->with('email','Email Address And Password Are Wrong');
+            if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
+                    return redirect()->route('home');
+            }else{
+                return redirect()->route('login')->with('email','Email Address And Password Are Wrong');
+            }
         }
+        
 
         
     }
