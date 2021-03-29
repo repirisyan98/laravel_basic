@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\
 use Illuminate\Database\Seeder;
+
 
 class BookSeeder extends Seeder
 {
