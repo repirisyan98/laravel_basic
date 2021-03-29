@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Form Edit Buku') }}</div>
+                <div class="card-header"><a href="{{route('kelola_buku.index')}}"><i class="fa fa-arrow-alt-circle-left"></i></a> {{ __('Form Edit Buku') }}</div>
                 <div class="card-body">
                     <form action="{{route('kelola_buku.update',$book->id)}}" method="POST">
                         @csrf
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10">
-                                <button type="submit" class="btn btn-primary">Edit</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
                         </div>
                     </form>

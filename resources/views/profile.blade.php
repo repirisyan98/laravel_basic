@@ -34,7 +34,7 @@
                             value="{{$i->email}}">
                         </div>
                         @endforeach
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </form>
                 </div>
             </div>

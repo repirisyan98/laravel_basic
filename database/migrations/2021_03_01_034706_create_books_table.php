@@ -19,6 +19,7 @@ class CreateBooksTable extends Migration
             $table->string('kategori',20);
             $table->string('penerbit');
             $table->date('tahun_terbit');
+            $table->string('cover');
             $table->timestamps();
         });
     }

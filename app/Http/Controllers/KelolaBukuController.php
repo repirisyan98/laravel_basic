@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KelolaBukuController extends Controller
 {
@@ -45,21 +46,33 @@ class KelolaBukuController extends Controller
      */
     public function store(Request $request,Book $book)
     {
-        $book = Book::create([
-            'nama' => $request->nama_buku,
-            'kategori' => $request->kategori_buku,
-            'penerbit' => $request->penerbit,
-            'tahun_terbit' => $request->tahun_terbit,
+        $validated = $request->validate([
+            'nama_buku' => 'required',
+            'kategori_buku' => 'required',
+            'penerbit' => 'required',
+            'tahun_terbit' => 'required|date',
+            'cover' => 'required|mimes:jpg,png,jpeg|max:512',
         ]);
-
-        $book->save();
-
-        $notification = array(
-            'message' => 'Data buku berhasil ditambahkan',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('kelola_buku.index')->with($notification);
+        if($validated == TRUE){
+            if($request->hasFIle('cover')){
+                $request->file('cover')->storeAs('public/img',$request->file('cover')->getClientOriginalName());
+                $book = Book::create([
+                    'nama' => $request->nama_buku,
+                    'kategori' => $request->kategori_buku,
+                    'penerbit' => $request->penerbit,
+                    'tahun_terbit' => $request->tahun_terbit,
+                    'cover' => $request->file('cover')->getClientOriginalName(),
+                ]);
+                $book->save();
+                $notification = array(
+                'message' => 'Data buku berhasil ditambahkan',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('kelola_buku.index')->with($notification);
+            }
+        }else{
+            return redirect()->route('kelola_buku.create');
+        }
     }
 
     /**

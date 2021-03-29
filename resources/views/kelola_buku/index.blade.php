@@ -19,16 +19,17 @@
                         <th>Kategori</th>
                         <th>Penerbit</th>
                         <th>Tahun Terbit</th>
+                        <th>Cover</th>
                         <th style="text-align: center;">Aksi</th>
                         <?php $no = 1?>
                         @foreach($data as $i)
                         <tr>
-                            
                             <td>{{$no++}}</td>
                             <td>{{$i->nama}}</td>
                             <td>{{$i->kategori}}</td>
                             <td>{{$i->penerbit}}</td>
                             <td>{{$i->tahun_terbit}}</td>
+                            <td><img src="{{Storage::url('img/'.$i->cover)}}" alt="" srcset="" width="200" height="200"></td>
                             <td style="text-align: center;"><a style="color: white;" class="btn btn-warning"
                                     href="{{route('kelola_buku.edit',$i->id)}}"><i class="fa fa-pencil-alt"></i>&nbspUbah</a>
                                 <button type="button" style="color: white;" class="btn-hapus btn btn-danger" data-toggle="modal" data-id="{{$i->id}}"

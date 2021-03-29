@@ -14,5 +14,6 @@ class Book extends Model
         'kategori',
         'penerbit',
         'tahun_terbit',
+        'cover',
     ];
 }
