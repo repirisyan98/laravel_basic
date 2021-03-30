@@ -134,7 +134,9 @@
     toastr.error("{{ $errors }}");
     @endif
 
-    $('#table-data').DataTable();
+    $('#table-data').DataTable({
+        "scrollX": true
+    });
     let baseurl = "<?=url('/')?>";
     let fullURL = "<?=url()->full()?>";
     </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class KelolaBukuController extends Controller
 {
@@ -26,6 +27,12 @@ class KelolaBukuController extends Controller
     public function getDataBuku($id){
         $buku = Book::find($id);
         return response()->json($buku);
+    }
+
+    public function printBuku(){
+        $books = Book::all();
+        $pdf = PDF::loadview('kelola_buku.print_books', ['books' => $books]);
+        return $pdf->download('data_buku.pdf');
     }
 
     /**

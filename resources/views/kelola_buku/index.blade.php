@@ -2,8 +2,6 @@
 
 @section('title', 'Kelola Buku')
 
-
-@section('content')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -11,32 +9,46 @@
             <div class="card">
                 <div class="card-header">{{ __('Kelola Buku') }}</div>
                 <div class="card-body">
-                    <a href="{{route('kelola_buku.create')}}" class="btn btn-primary text-decoration-none"
-                        style="color: white;">Tambah <i class="fa fa-plus"></i></a>
-                    <table class="table mt-4" id="myTable">
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Penerbit</th>
-                        <th>Tahun Terbit</th>
-                        <th>Cover</th>
-                        <th style="text-align: center;">Aksi</th>
-                        <?php $no = 1?>
-                        @foreach($data as $i)
-                        <tr>
-                            <td>{{$no++}}</td>
-                            <td>{{$i->nama}}</td>
-                            <td>{{$i->kategori}}</td>
-                            <td>{{$i->penerbit}}</td>
-                            <td>{{$i->tahun_terbit}}</td>
-                            <td><img src="{{Storage::url('img/'.$i->cover)}}" alt="" srcset="" width="200" height="200"></td>
-                            <td style="text-align: center;"><a style="color: white;" class="btn btn-warning"
-                                    href="{{route('kelola_buku.edit',$i->id)}}"><i class="fa fa-pencil-alt"></i>&nbspUbah</a>
-                                <button type="button" style="color: white;" class="btn-hapus btn btn-danger" data-toggle="modal" data-id="{{$i->id}}"
-                                   data-target="#hapusModal"><i class="fa fa-trash-alt"></i>&nbspHapus</a>
-                            </td>
-                        </tr>
-                        @endforeach
+                    <div class="mb-2">
+                        <a href="{{route('kelola_buku.create')}}" class="btn btn-primary text-decoration-none"
+                            style="color: white;">Tambah <i class="fa fa-plus"></i></a>
+                        <a href="{{route('kelola_buku.print.book')}}" class="btn btn-success text-decoration-none"
+                            style="color: white;">Cetak <i class="fa fa-print"></i></a>
+                    </div>
+
+                    <table id="table-data" class="table mt-4 table-hover table-bordered display nowrap" style="width:100%">
+                        <thead class="thead-dark text-center">
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Kategori</th>
+                            <th>Penerbit</th>
+                            <th>Tahun Terbit</th>
+                            <th>Cover</th>
+                            <th style="text-align: center;">Aksi</th>
+                            <?php $no = 1?>
+                        </thead>
+                        <tbody>
+                            @foreach($data as $i)
+                            <tr>
+                                <td>{{$no++}}</td>
+                                <td>{{$i->nama}}</td>
+                                <td>{{$i->kategori}}</td>
+                                <td>{{$i->penerbit}}</td>
+                                <td>{{$i->tahun_terbit}}</td>
+                                <td>
+                                    <img src="{{Storage::url('img/'.$i->cover)}}" width="100" height="100">
+                                </td>
+                                <td style="text-align: center;"><a style="color: white;" class="btn btn-sm btn-warning"
+                                        href="{{route('kelola_buku.edit',$i->id)}}"><i
+                                            class="fa fa-pencil-alt"></i>&nbspUbah</a>
+                                    <button type="button" style="color: white;" class="btn-hapus btn btn-sm btn-danger"
+                                        data-toggle="modal" data-id="{{$i->id}}" data-target="#hapusModal"><i
+                                            class="fa fa-trash-alt"></i>&nbspHapus</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+
                     </table>
                 </div>
             </div>
@@ -51,13 +63,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Konfirmasi</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Buku</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Apakah Anda yakin ingin menghapus data tersebut ?
+                Apakah Anda yakin ingin menghapus data buku <b><span id="text_buku_hapus"></span></b> ?
 
                 <form method="post" id="form-hapus">
                     @csrf
@@ -73,7 +85,6 @@
     </div>
 </div>
 @stop
-@stop
 
 @section('css')
 <!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
@@ -81,22 +92,23 @@
 
 @section('js')
 <script>
-$(document).ready(function(){
-  $(".btn-hapus").click(function(){
-    let id = $(this).data('id');
-    console.log(baseurl+'/admin/ajaxadmin/dataBuku/'+id);
+$(document).ready(function() {
+    $(".btn-hapus").click(function() {
+        let id = $(this).data('id');
+        console.log(baseurl + '/admin/ajaxadmin/dataBuku/' + id);
         $.ajax({
             type: "GET",
-            url: baseurl+'/admin/ajaxadmin/dataBuku/'+id,
+            url: baseurl + '/admin/ajaxadmin/dataBuku/' + id,
             dataType: 'json',
-            success: function(res){
-                $('#hapus-id').val(res.id);         
-                $('#form-hapus').attr('action',baseurl+'/kelola_buku/'+id);
+            success: function(res) {
+                $('#hapus-id').val(res.id);
+                $('#form-hapus').attr('action', baseurl + '/kelola_buku/' + id);
+                $('#text_buku_hapus').text(res.nama);
             },
-            error: function(jqXHR){
+            error: function(jqXHR) {
                 console.log(jqXHR);
             },
-        
+
         });
     });
 });
