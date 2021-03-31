@@ -20,7 +20,30 @@ class ProfileController extends Controller
         $users = User::all()->where('email',$mail);
         return view('profile',compact('users'));
     }
+    public function change_password(){
+        $mail = Auth::user()->email;
+        $data = User::all()->where('email',$mail);
+        return view('change_password',compact('data'));
+    }
 
+    public function change_password_update(Request $request, User $profile){
+        $validated = $request->validate([
+            'password' => 'required|confirmed|min:5',
+        ]);
+        if($validated == TRUE){
+            $data = User::find($request->id);
+            $data->password = bcrypt($request->password);
+            $data->save();
+                $notification = array(
+                'message' => 'Password Berhasil Diubah',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('change.password')->with($notification);
+        }else{
+            return redirect()->route('change.password');
+        }
+        
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -95,4 +118,6 @@ class ProfileController extends Controller
     {
         //
     }
+
+    
 }

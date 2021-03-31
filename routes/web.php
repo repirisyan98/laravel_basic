@@ -26,5 +26,7 @@ Route::post('admin/importBuku/', [KelolaBukuController::class, 'import'])->name(
 Route::get('admin/ajaxadmin/dataBuku/{id}',[KelolaBukuController::class, 'getDataBuku']);
 Route::get('admin/print_buku', [KelolaBukuController::class, 'printBuku'])->name('kelola_buku.print.book');
 Route::get('admin/books/export',[KelolaBukuController::class, 'export'])->name('admin.book.export')->middleware('is_admin');
+Route::get('admin/password', [ProfileController::class, 'change_password'])->name('change.password');
+Route::post('admin/change_password', [ProfileController::class, 'change_password_update'])->name('update.password');
 Route::resource('profile',ProfileController::class);
 Route::resource('kelola_buku',KelolaBukuController::class)->middleware('is_admin');
