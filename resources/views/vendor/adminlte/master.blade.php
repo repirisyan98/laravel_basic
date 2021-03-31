@@ -69,6 +69,7 @@
         <link rel="manifest" href="{{ asset('favicons/manifest.json') }}">
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ asset('favicon/ms-icon-144x144.png') }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
     @endif
 
 <!-- Toastr -->
@@ -135,7 +136,9 @@
     @endif
 
     $('#table-data').DataTable({
-        "scrollX": true
+        "searching": false, 
+        "scrollX": true,
+        "bLengthChange": false,
     });
     let baseurl = "<?=url('/')?>";
     let fullURL = "<?=url()->full()?>";

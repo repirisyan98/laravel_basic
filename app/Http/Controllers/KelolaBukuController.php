@@ -6,6 +6,9 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use App\Exports\BooksExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BooksImport;
 
 class KelolaBukuController extends Controller
 {
@@ -22,6 +25,21 @@ class KelolaBukuController extends Controller
     {
         $data = Book::all();
         return view('kelola_buku.index',compact('data'));
+    }
+
+    public function import(Request $request){
+        Excel::import(new BooksImport, $request->file('import_file'));
+        $notification = array(
+        'message' => 'Import data berhasil dilakukan',
+        'alert-type' => 'success'
+        );
+
+        return redirect()->route('kelola_buku.index')->with($notification);
+    }
+
+    public function export()
+    {
+        return Excel::download(new BooksExport, 'books.xlsx');
     }
 
     public function getDataBuku($id){

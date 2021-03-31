@@ -1,7 +1,9 @@
 @extends('adminlte::page')
 
 @section('title', 'Kelola Buku')
-
+@section('content_header')
+<h1>Kelola Buku</h1>
+@stop
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -12,11 +14,23 @@
                     <div class="mb-2">
                         <a href="{{route('kelola_buku.create')}}" class="btn btn-primary text-decoration-none"
                             style="color: white;">Tambah <i class="fa fa-plus"></i></a>
-                        <a href="{{route('kelola_buku.print.book')}}" class="btn btn-success text-decoration-none"
-                            style="color: white;">Cetak <i class="fa fa-print"></i></a>
+                        <a href="{{route('kelola_buku.print.book')}}" target="_blank"
+                            class="btn btn-success text-decoration-none" style="color: white;">Cetak <i
+                                class="fa fa-print"></i></a>
+                        <a href="{{route('admin.book.export')}}" class="btn btn-secondary text-decoration-none"
+                            style="color: white;">Export <i class="fa fa-file-export"></i></a>
+                        <a href="#" id="importFile" class="btn btn-secondary text-decoration-none"
+                            style="color: white;">Import <i class="fa fa-file-import"></i></a>
+
+                        <form hidden action="{{route('kelola.buku.import')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" id="theFileInput" name="import_file" style="display:none;" />
+                            <button type="submit" id="btn_import"></button>
+                        </form>
                     </div>
 
-                    <table id="table-data" class="table mt-4 table-hover table-bordered display nowrap" style="width:100%">
+                    <table id="table-data" class="table mt-4 table-hover table-bordered display nowrap"
+                        style="width:100%">
                         <thead class="thead-dark text-center">
                             <th>No</th>
                             <th>Nama</th>
@@ -30,16 +44,16 @@
                         <tbody>
                             @foreach($data as $i)
                             <tr>
-                                <td>{{$no++}}</td>
-                                <td>{{$i->nama}}</td>
-                                <td>{{$i->kategori}}</td>
-                                <td>{{$i->penerbit}}</td>
-                                <td>{{$i->tahun_terbit}}</td>
-                                <td>
+                                <td class="align-middle">{{$no++}}</td>
+                                <td class="align-middle">{{$i->nama}}</td>
+                                <td class="align-middle">{{$i->kategori}}</td>
+                                <td class="align-middle">{{$i->penerbit}}</td>
+                                <td class="align-middle">{{$i->tahun_terbit}}</td>
+                                <td class="align-middle">
                                     <img src="{{Storage::url('img/'.$i->cover)}}" width="100" height="100">
                                 </td>
-                                <td style="text-align: center;"><a style="color: white;" class="btn btn-sm btn-warning"
-                                        href="{{route('kelola_buku.edit',$i->id)}}"><i
+                                <td style="text-align: center;" class="align-middle"><a style="color: white;"
+                                        class="btn btn-sm btn-warning" href="{{route('kelola_buku.edit',$i->id)}}"><i
                                             class="fa fa-pencil-alt"></i>&nbspUbah</a>
                                     <button type="button" style="color: white;" class="btn-hapus btn btn-sm btn-danger"
                                         data-toggle="modal" data-id="{{$i->id}}" data-target="#hapusModal"><i
@@ -93,6 +107,14 @@
 @section('js')
 <script>
 $(document).ready(function() {
+    $('#importFile').click(function() {
+        $('#theFileInput').click();
+    });
+
+    $('#theFileInput').change(function() {
+       $('#btn_import').click();
+    });
+
     $(".btn-hapus").click(function() {
         let id = $(this).data('id');
         console.log(baseurl + '/admin/ajaxadmin/dataBuku/' + id);
